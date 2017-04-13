@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    margin-bottom: 0;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+#tooltip {
+    z-index: 1;
+    position: absolute;
+    display: none;
+    top:0;
+    left:0;
+    background-color: #000;
+    color: #feeaa1;
+    font-size: 17px;
+    padding: 6px;
+    border-radius: 5px;
+}
+.infomessage {
+    color: #aaccff;
+}
+.navbut button {
+    background-color: #aaccff;
+    font-size: 20px;
+    height: 30px;
+    width: 100px;
+    font-style: italic;
+}
+.main {
+    width: 650px;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:5px;
+    margin-bottom:20px;
+}
+.hidden {
+    visibility: hidden;
+}
+.none {
+    display: none;
+}
+.editor {
+    color: #363cff;
+    background-color: #fffad9;
+    margin-top:10px;
+    margin-left:10px;
+    width: 130px;
+    font-size: 15px;
+    font-style: italic;
+}
+.editor input {
+    color: #363cff;
+    width: 20px;
+    font-size: 15px;
+    font-style: italic;
+}
+.editor button {
+    background-color: #c9eeff;
+    font-size: 15px;
+    height: 25px;
+    width: 50px;
+    font-style: italic;
+}
+ul {
+    margin: -0.5px;
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+}
+ul li.column {
+    margin: -0.5px;
+    border: 1px solid #6e6380;
+    display: inline-block;
+    padding: 0;
+    width: 15px;
+    height: 15px;
+}
+ul li.fifth {
+    border-right: 2px solid #6e6380;
+}
+ul.fifth {
+    border-bottom: 2px solid #6e6380;
+}
+ul li.nav {
+    background-color: #daf8de;
+    text-align: center;
+    font-size: 11px;
+    font-style: italic;
+    cursor: default;
+}
+ul li.white {
+    background-color: white;
+}
+ul li.black {
+    background-color: black;
+}
+ul li.silver {
+    background-color: #d0cdc6;
+}
+ul li.crossed {
+    text-decoration: line-through;
+    text-decoration-color: red;
+}
