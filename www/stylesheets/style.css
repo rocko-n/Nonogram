@@ -31,6 +31,7 @@ body {
     margin-right:auto;
     margin-top:5px;
     margin-bottom:20px;
+    float: left;
 }
 .hidden {
     visibility: hidden;
@@ -47,6 +48,19 @@ body {
     font-size: 15px;
     font-style: italic;
 }
+.canvas {
+    color: #363cff;
+    background-color: #fffad9;
+    margin-top:10px;
+    margin-left:10px;
+    width: 250px;
+    font-size: 15px;
+    font-style: italic;
+}
+#canvas {
+    float: left;
+}
+
 .editor input {
     color: #363cff;
     width: 20px;

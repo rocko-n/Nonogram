@@ -4,6 +4,16 @@
  */
 var mapArr;
 /**
+ * Win counter
+ * @type {Number}
+ */
+var winCounter;
+/**
+ * Edit state
+ * @type {Boolean}
+ */
+var edit;
+/**
  * Mouse left button hold
  * @type {boolean}
  */
@@ -26,16 +36,21 @@ var buttonDiv = document.getElementById('nav');
 var field = $('ul.main');
 $('#start').click(function () {
     offMouseEvents = false;
-    $('#tooltip').hide();
-    $('.editor').hide();
-    mapArr = nonoPlus;
-    $('.main').html(nonogramConstractor());
-    edit = false;
+    $('#tooltip').fadeOut(300);
+    $('#canvas').hide();
+    $('.canvas').hide();
+    $('.editor').fadeOut(300, function() {
+        mapArr = nonoPlus;
+        $('.main').html(nonogramConstractor());
+        edit = false;
+    });
 });
 $('#edit').click(function () {
-    $('#tooltip').hide();
+    $('.canvas').hide();
+    $('#tooltip').fadeOut(300);
+    $('#canvas').hide();
     $('.main').html('');
-    $('.editor').show();
+    $('.editor').fadeIn(500);
 });
 $('#build').click(function () {
     var x = $('#x-count').val();
@@ -53,16 +68,32 @@ $('#play').click(function () {
         alert('Please, build field first.');
         return;
     };
+    $('.editor').fadeOut(300, function() {
+        edit = false;
+        convertEditField();
+        $('.main').html(nonogramConstractor());
+        if ( winCounter === 0 ) {
+            $('#tooltip').html('Noting to play')
+                .css(getOffsetRect(buttonDiv, buttonDiv.offsetHeight))
+                .show();
+            $('.main').html('');
+        };
+    });
+});
+$('#image').click(function () {
+    $('#tooltip').fadeOut(300);
+    $('.main').html('');
     $('.editor').hide();
-    edit = false;
-    convertEditField();
-    $('.main').html(nonogramConstractor());
-    if ( winCounter === 0 ) {
-        $('#tooltip').html('Noting to play')
-            .css(getOffsetRect(buttonDiv, buttonDiv.offsetHeight))
-            .show();
-        $('.main').html('');
-    };
+    $('.canvas').fadeIn(500);
+});
+$('#buildcan').click(function () {
+    $('#canvas').fadeIn(500);
+    getCanvasPx().then(function(res) {
+        console.log(res.field.data);
+        getMapArrFromCanvas(res, $('#monochrome').val());
+        console.log(JSON.stringify(mapArr));
+        $('.main').html(nonogramConstractor('canvas'));
+    });
 });
 /**Play/Edit module*/
 $('body').contextmenu(function (event) {

@@ -10,7 +10,14 @@
         <div align="left" class="navbut" id="nav">
             <button id="start">Start</button>
             <button id="edit">Editor</button>
+            <button id="image">Image</button>
         </div>
+        <div class="canvas none">
+            <input type="text" id="monochrome" size="2" maxlength="3" value="150"><text>MonoChromeRate(0-255)</text>
+            <br>
+            <button id="buildcan">Build</button>
+        </div>
+        <canvas id="canvas" class="none"></canvas>
         <div class="editor none">
             <input type="text" id="x-count" size="1" maxlength="2" value="20"><text>Width(10-59)</text>
             <br>
