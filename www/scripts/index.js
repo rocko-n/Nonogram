@@ -1,4 +1,9 @@
 /**
+ * Prev/Now played nonogram (for next stage)
+ * @type {Number}
+ */
+var prev;
+/**
  * Array of arrays - map for nonogramConstructor
  * @type {*[]}
  */
@@ -12,7 +17,12 @@ var winCounter;
  * Edit state
  * @type {Boolean}
  */
-var edit;
+var edit = false;
+/**
+ * Canvas edit state
+ * @type {Boolean}
+ */
+var canvasEdit = false;
 /**
  * Mouse left button hold
  * @type {boolean}
@@ -35,6 +45,7 @@ var buttonDiv = document.getElementById('nav');
  */
 var field = $('ul.main');
 $('#start').click(function () {
+    prev = 0;
     offMouseEvents = false;
     $('#tooltip').fadeOut(300);
     $('#canvas').hide();
@@ -43,6 +54,7 @@ $('#start').click(function () {
         mapArr = nonoPlus;
         $('.main').html(nonogramConstractor());
         edit = false;
+        canvasEdit = false;
     });
 });
 $('#edit').click(function () {
@@ -51,6 +63,8 @@ $('#edit').click(function () {
     $('#canvas').hide();
     $('.main').html('');
     $('.editor').fadeIn(500);
+    edit = false;
+    canvasEdit = false;
 });
 $('#build').click(function () {
     var x = $('#x-count').val();
@@ -85,15 +99,35 @@ $('#image').click(function () {
     $('.main').html('');
     $('.editor').hide();
     $('.canvas').fadeIn(500);
+    edit = false;
+    canvasEdit = false;
 });
 $('#buildcan').click(function () {
-    $('#canvas').fadeIn(500);
-    getCanvasPx().then(function(res) {
-        console.log(res.field.data);
-        getMapArrFromCanvas(res, $('#monochrome').val());
-        console.log(JSON.stringify(mapArr));
-        $('.main').html(nonogramConstractor('canvas'));
+    var dwidth = $('#dwidth').val();
+    var monoChrome = $('#monochrome').val();
+    if ( !/^\d{1,3}$/.test(dwidth) || +dwidth < 10 || +dwidth > 150 ) {
+        alert('Wrong field "Desired width"');
+        return;
+    };
+    if ( !/^\d{1,3}$/.test(monoChrome) || +monoChrome < 0 || +monoChrome > 255 ) {
+        alert('Wrong field "MonoChromeRate"');
+        return;
+    };
+    offMouseEvents = false;
+    $('#canvas').show();
+    getCanvasPx(+dwidth, $('#imgname').val()).then(function(res) {
+        getMapArrFromCanvas(res, +monoChrome);
+        $('.main').html(nonogramConstractor('canvas', res.width, res.height));
+        canvasEdit = true;
     });
+});
+$('#playcan').click(function () {
+    if ( !canvasEdit ) {
+        alert('Please, build field first.');
+        return;
+    };
+    $('.main').html(nonogramConstractor());
+    canvasEdit = false;
 });
 /**Play/Edit module*/
 $('body').contextmenu(function (event) {
@@ -114,7 +148,7 @@ field.on('mousedown', 'li:not(.nav)',function (event) {
         };
         if ( ($(event.currentTarget).hasClass('white') || $(event.currentTarget).hasClass('black')) && mouseHoldLeft ) {
             $(event.currentTarget).toggleClass('white black');
-            if ( !edit ) {
+            if ( !edit && !canvasEdit ) {
                 winCheck(event);
             };
         } else if ( ($(event.currentTarget).hasClass('white') || $(event.currentTarget).hasClass('silver')) && mouseHoldRight && !edit ) {
@@ -130,7 +164,7 @@ field.on('mouseover', 'li:not(.nav)',function (event) {
     if ( !offMouseEvents ) {
         if ( ($(event.currentTarget).hasClass('white') || $(event.currentTarget).hasClass('black')) && mouseHoldLeft ) {
             $(event.currentTarget).toggleClass('white black');
-            if ( !edit ) {
+            if ( !edit && !canvasEdit ) {
                 winCheck(event);
             };
         } else if ( ($(event.currentTarget).hasClass('white') || $(event.currentTarget).hasClass('silver')) && mouseHoldRight && !edit ) {

@@ -14,7 +14,7 @@ function nonogramConstractor(key, x, y) {
     var html = "";
     var vMax = y;
     var hMax = x;
-    if ( key !== 'edit' ) {
+    if ( key !== 'edit' && key !== 'canvas' ) {
         vMax = mapArr.length;
         hMax = mapArr[0].length;
         /**Building navDigits for horizontal columns*/
@@ -137,12 +137,11 @@ function winCheck(event) {
     /**Win check*/
     if ( winCounter === 0 ) {
         /**Win message*/
-        $('#tooltip').html('You WIN!<br>Try another Nonogram.')
+        $('#tooltip').html('You WIN!<br>Try another Nonogram.<br><button id="next">Next</button>')
             .css(getOffsetRect(buttonDiv, buttonDiv.offsetHeight))
             .show();
         /**Turn off play mouse events*/
         offMouseEvents = true;
-        //field.off('mousedown mouseover mouseup');
     };
 }
 /**
@@ -182,18 +181,20 @@ function getOffsetRect(elem, y) {
 }
 /**
  * Draw image ang get array of pixels
+ * @param {Number} width
+ * @param {String} imgName
  * @returns {Promise<T>|Promise}
  */
-function getCanvasPx() {
+function getCanvasPx(width, imgName) {
     var canvasField;
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
     var img = new Image();
-    img.src = "images/img1.jpg";
+    img.src = "images/" + imgName;
     var prom = new Promise (function(resolve) {
         img.onload = function() {
-            canvas.width = 400;
-            canvas.height = Math.floor(400*img.height/img.width);
+            canvas.width = width;
+            canvas.height = Math.floor(width*img.height/img.width);
             context.drawImage(img, 0, 0, canvas.width, canvas.height);
             canvasField = context.getImageData(0, 0, canvas.width, canvas.height);
             resolve({field: canvasField, width: canvas.width, height: canvas.height});
@@ -208,27 +209,23 @@ function getCanvasPx() {
  */
 function getMapArrFromCanvas(data, monoRate) {
     mapArr = [];
-    maxI = Math.floor(data.height/10);
-    for ( var i = 0; i < maxI; i++ ) {
+    for ( var i = 0; i < data.height; i++ ) {
         mapArr.push([]);
-        for ( var j = 0; j < 40; j++ ) {
-            var light = 0;
-            var dark = 0;
-            for ( var k = 0; k < 10; k++ ) {
-                for (var l = 0; l < 4*10; l += 4 ) {
-
-                    var average = (data.field.data[4*k*data.width + l + j*4*10 + 4*data.width*i*10] + data.field.data[4*k*data.width + l + 1 + j*4*10 + 4*data.width*i*10] + data.field.data[4*k*data.width + l + 2 + j*4*10 + 4*data.width*i*10])/3;
-                    if ( average < monoRate ) {
-                        dark++;
-                    } else {
-                        light++;
-                    };
-                };
-            };
-            var result = (dark - light)<0?0:1;
+        for ( var j = 0; j < data.width*4; j +=4 ) {
+            var average = (data.field.data[4*i*data.width + j] + data.field.data[4*i*data.width + j + 1] + data.field.data[4*i*data.width + j + 1])/3;
+            var result = average>monoRate?0:1;
             mapArr[i].push(result);
-        }
-    }
+        };
+    };
+}
+function nextNonogram() {
+    if ( prev !== colectionToPlay.length - 1 ) {
+        mapArr = colectionToPlay[prev + 1];
+    } else {
+        prev = 0;
+        mapArr = colectionToPlay[0];
+    };
+
 }
 /**
  * MapArr for nonogramConstructor
@@ -276,3 +273,4 @@ var nonoSomething = [[1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                      [1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
                      [1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1]];
+var colectionToPlay = [nonoTest, nonoPlus, nonoSomething];

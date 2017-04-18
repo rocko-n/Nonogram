@@ -13,9 +13,14 @@
             <button id="image">Image</button>
         </div>
         <div class="canvas none">
-            <input type="text" id="monochrome" size="2" maxlength="3" value="150"><text>MonoChromeRate(0-255)</text>
+            <input type="text" id="dwidth" size="5" maxlength="3" value="60"><text>Desired width(10-150)</text>
             <br>
+            <input type="text" id="imgname" size="5" maxlength="" value="img.jpg"><text>File name</text>
+            <br>
+            <input type="text" id="monochrome" size="5" maxlength="3" value="170"><text>MonoChromeRate(0-255)</text>
+            <hr>
             <button id="buildcan">Build</button>
+            <button id="playcan">Play</button>
         </div>
         <canvas id="canvas" class="none"></canvas>
         <div class="editor none">

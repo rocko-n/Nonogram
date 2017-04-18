@@ -31,7 +31,6 @@ body {
     margin-right:auto;
     margin-top:5px;
     margin-bottom:20px;
-    float: left;
 }
 .hidden {
     visibility: hidden;
@@ -53,7 +52,7 @@ body {
     background-color: #fffad9;
     margin-top:10px;
     margin-left:10px;
-    width: 250px;
+    width: 300px;
     font-size: 15px;
     font-style: italic;
 }
