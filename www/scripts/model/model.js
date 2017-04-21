@@ -138,8 +138,7 @@ define({
         return html;
     },
 
-    winCheck: function (event) {
-        var curTarget = $(event.currentTarget);
+    winCheck: function (curTarget) {
         if (curTarget.hasClass('black') && this.mapArr[curTarget.closest('ul').attr('data-v')][curTarget.attr('data-h')]) {
             this.winCounter--;
             console.log(this.winCounter);
