@@ -84,7 +84,7 @@ requirejs(['jquery', 'model/model', 'view/view'],
                 if ((curTarget.hasClass('white') || curTarget.hasClass('black')) && model.mouseHoldLeft) {
                     view.toggleClassWB(curTarget);
                     if (!model.edit && !model.canvasEdit) {
-                        if (model.winCheck(event) === "winner") {
+                        if (model.winCheck(curTarget) === "winner") {
                             view.winMessager();
                             model.offMouseEvents = true;
                         }
@@ -104,7 +104,7 @@ requirejs(['jquery', 'model/model', 'view/view'],
                 if ((curTarget.hasClass('white') || curTarget.hasClass('black')) && model.mouseHoldLeft) {
                     view.toggleClassWB(curTarget);
                     if (!model.edit && !model.canvasEdit) {
-                        if (model.winCheck(event) === "winner") {
+                        if (model.winCheck(curTarget) === "winner") {
                             view.winMessager();
                             model.offMouseEvents = true;
                         }
